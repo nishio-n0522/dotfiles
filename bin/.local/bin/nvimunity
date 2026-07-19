@@ -1,0 +1,37 @@
+#!/bin/sh
+# Unity（nvim-unity パッケージ）から呼ばれる Neovim ランチャー。
+#
+# なぜ必要か:
+#   nvim-unity の Utils.GetLauncherPath() は "nvimunity" という名前のランチャーを
+#   固定パス群から探し、見つからないと null を返す。その null が
+#   CodeEditor.Installation.Path に入ると Unity 本体の CodeEditor.AddIfPathExists が
+#   Dictionary.ContainsKey(null) で ArgumentNullException を投げ、
+#   SettingsWindow が例外→再選択の無限ループに陥って Preferences が固まる
+#   （Unity プロセスごと CPU 100% でハング）。
+#   このファイルを ~/.local/bin/nvimunity に置くだけで null が回避される。
+#
+# 呼ばれ方:  nvimunity "<開くパス>" +<行番号>
+#
+# nvim は mise 管理のため実体パスが変わりうる。バージョン切り替えに追従させるので
+# 絶対パスではなく shim を指す。Unity.app の PATH には mise が入っていないため、
+# ここで PATH に頼らず解決するのが要点
+
+NVIM="$HOME/.local/share/mise/shims/nvim"
+[ -x "$NVIM" ] || NVIM=$(command -v nvim) || {
+	echo "nvimunity: nvim が見つかりません" >&2
+	exit 1
+}
+
+SOCKET="$HOME/.cache/nvimunity.sock"
+mkdir -p "$(dirname "$SOCKET")"
+
+# 前回の異常終了で残ったソケットがあると --listen が失敗する。
+# 生きているサーバがあればそちらへ送って終了し、死んでいれば掃除して新規起動する
+if [ -S "$SOCKET" ]; then
+	if "$NVIM" --server "$SOCKET" --remote-expr 1 >/dev/null 2>&1; then
+		exec "$NVIM" --server "$SOCKET" --remote "$@"
+	fi
+	rm -f "$SOCKET"
+fi
+
+exec "$NVIM" --listen "$SOCKET" "$@"
