@@ -160,3 +160,10 @@ local function definition_in_other_window()
 end
 
 vim.keymap.set("n", "gV", definition_in_other_window, { desc = "定義を隣のペインで開く" })
+
+-- LSP サーバの再起動。Roslyn（C#）は plugins/roslyn.lua で filewatching を off に
+-- しているため、Unity 側でのファイル生成・外部ツールでの変更を検知しない。
+-- .cs の追加や Regenerate Project Files の後はこれで拾い直す
+vim.keymap.set("n", "<leader>lr", function()
+  vim.cmd("LspRestart")
+end, { noremap = true, desc = "LSP サーバを再起動" })
