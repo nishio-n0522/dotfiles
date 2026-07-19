@@ -4,3 +4,7 @@ if command -v mise >/dev/null 2>&1; then
 elif [[ -x "$HOME/.local/bin/mise" ]]; then
   eval "$($HOME/.local/bin/mise activate zsh)"
 fi
+setopt interactive_comments
+
+# ~/.local/bin (claude native install, mise 等)
+export PATH="$HOME/.local/bin:$PATH"
