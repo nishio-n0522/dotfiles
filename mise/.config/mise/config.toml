@@ -1,0 +1,5 @@
+[tools]
+gh = "latest"
+neovim = "latest"
+node = "22"
+"npm:@devcontainers/cli" = "latest"

@@ -1,0 +1,17 @@
+{
+  "Vitest describe block": {
+    "prefix": "desc",
+    "body": [
+      "describe(\"${1:対象}\", () => {",
+      "\tit(\"${2:期待する挙動}\", () => {",
+      "\t\t$0",
+      "\t});",
+      "});"
+    ],
+    "description": "Vitest の describe / it ブロック"
+  },
+  "Debug log": {
+    "prefix": "debug",
+    "body": ["console.debug(\"[DEBUG] $1\", $2);"]
+  }
+}

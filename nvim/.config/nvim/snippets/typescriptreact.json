@@ -1,0 +1,20 @@
+{
+  "このファイルの書き方（VS Code のスニペット説明の移植）": {
+    "prefix": "snippet-help",
+    "body": [],
+    "description": "ここに typescriptreact(.tsx) 用のスニペットを定義する。各スニペットは名前をキーにして prefix / body / description を持つ。prefix が補完のトリガーになり、body（行の配列）が展開・挿入される。使える変数: $1, $2 … はタブストップ（Tab / Shift+Tab で移動）、$0 は最終カーソル位置、${1:ラベル} は初期値付きプレースホルダ。同じ番号のプレースホルダは連動して同時編集される。注意: VS Code と違い // コメントは書けない（厳密な JSON のみ。書くとファイル全体が読み込み失敗する）。編集後は nvim を再起動すると反映される"
+  },
+  "React function component": {
+    "prefix": "rfc",
+    "body": [
+      "type ${1:Component}Props = {",
+      "\t$2",
+      "};",
+      "",
+      "export function $1({ $3 }: $1Props) {",
+      "\treturn <div>$0</div>;",
+      "}"
+    ],
+    "description": "型付き Props 付きの関数コンポーネント（$1 が連動する例）"
+  }
+}

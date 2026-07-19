@@ -1,0 +1,7 @@
+# stylua の既定インデントはタブだが、この配下の Lua は 2 スペースで書かれている。
+# 設定が無いと保存時整形（conform → stylua）がファイル全体を再インデントし、
+# 無関係な差分が PR に混入する（markdown の自動整形を lua/plugins/format.lua で
+# 無効化しているのと同じ理由）。conform は --search-parent-directories 付きで
+# stylua を呼ぶため、このファイルが .devcontainer/nvim/ 配下すべてに効く。
+indent_type = "Spaces"
+indent_width = 2
